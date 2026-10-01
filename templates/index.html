@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador CD Virtual - Planta Baixa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h1>🏢 Centro de Distribuição Virtual - Hub de Cargas</h1>
+    <p style="text-align:center; color:#aaa;">Clique no setor para abrir a estação de controle e liberar os processos.</p>
+<!-- Planta do Galpão com Trava de Segurança -->
+    <div class="planta-container">
+        <!-- Card 1: Portaria (Sempre liberado para início da simulação) -->
+        <div class="modulo-card" onclick="abrirModal('modal-portaria')">
+            <span class="luz-status status-AMARELO" id="luz-portaria"></span>
+            <h3>1. Portaria</h3>
+            <p>Triagem de Veículos e Validação de DANFE</p>
+        </div>
+
+        <!-- Card 2: Doca (Usa abrirModalSeguro para verificar se a Portaria foi concluída) -->
+        <div class="modulo-card" onclick="abrirModalSeguro('modal-conferencia')">
+            <span class="luz-status status-BLOQUEADO" id="luz-recebimento"></span>
+            <h3>2. Doca e Conferência</h3>
+            <p>Descarregamento, Contagem e Avarias</p>
+        </div>
+
+        <!-- Card 3: Estoque WMS (Usa abrirModalSeguro para verificar se a Doca foi concluída) -->
+        <div class="modulo-card" onclick="abrirModalSeguro('modal-estoque')">
+            <span class="luz-status status-BLOQUEADO" id="luz-estoque"></span>
+            <h3>3. WMS / Armazém</h3>
+            <p>Endereçamento, Pulmão e Picking</p>
+        </div>
+    </div>
+    <!-- Modais Separados dos Setores -->
+    {% include 'modais/portaria.html' %}
+    {% include 'modais/recebimento.html' %}
+    {% include 'modais/estoque.html' %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

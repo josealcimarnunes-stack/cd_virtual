@@ -1,0 +1,20 @@
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1e1e2f; color: #fff; margin: 0; padding: 20px; }
+h1 { text-align: center; color: #4ba3e3; }
+
+/* Planta da Fábrica */
+.planta-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; }
+.modulo-card { background: #2d2d44; border: 2px solid #3d3d5c; border-radius: 10px; width: 220px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+.modulo-card:hover { border-color: #4ba3e3; transform: translateY(-5px); }
+
+/* Indicadores de Status (Luzes) */
+.luz-status { width: 20px; height: 20px; border-radius: 50%; display: inline-block; margin-bottom: 10px; }
+.status-VERDE { background-color: #00e676; box-shadow: 0 0 10px #00e676; }
+.status-AMARELO { background-color: #ffea00; box-shadow: 0 0 10px #ffea00; }
+.status-VERMELHO { background-color: #ff1744; box-shadow: 0 0 10px #ff1744; }
+.status-BLOQUEADO { background-color: #616161; }
+
+/* Estrutura do Modal */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; }
+.modal-conteudo { background: #2d2d44; padding: 30px; border-radius: 8px; width: 450px; position: relative; }
+.fechar-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; color: #aaa; }
+.btn-acao { background-color: #4ba3e3; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-top: 15px; }

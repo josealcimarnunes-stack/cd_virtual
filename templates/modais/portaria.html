@@ -1,0 +1,136 @@
+<div class="modal-overlay" id="modal-portaria">
+    <div class="modal-conteudo" style="width: 700px; max-height: 90vh; overflow-y: auto;">
+        <span class="fechar-btn" onclick="fecharModal('modal-portaria')">&times;</span>
+        <h2>🚚 Módulo da Portaria & Balança Rodoviária</h2>
+        <p style="color: #aaa; font-size: 13px;">Gestão de Fluxo de Entrada, Inspeção, Balança e Liberação</p>
+        <hr style="border-color: #3d3d5c; margin-bottom: 15px;">
+
+        <!-- Navegação por Submódulos -->
+        <div style="display: flex; gap: 5px; margin-bottom: 15px; background: #1a1a2e; padding: 5px; border-radius: 5px;">
+            <button class="btn-aba active" onclick="mudarAbaPortaria('aba-triagem')">1. Triagem</button>
+            <button class="btn-aba" onclick="mudarAbaPortaria('aba-balanca')">2. Balança</button>
+            <button class="btn-aba" onclick="mudarAbaPortaria('aba-inspecao')">3. Inspeção</button>
+            <button class="btn-aba" onclick="mudarAbaPortaria('aba-fiscal')">4. Fiscal & NF</button>
+            <button class="btn-aba" onclick="mudarAbaPortaria('aba-doca')">5. Doca & Pátio</button>
+        </div>
+
+        <form id="form-portaria-completo" onsubmit="event.preventDefault(); processarPortariaCompleta();">
+            
+            <!-- SUBMÓDULO 1: TRIAGEM -->
+            <div id="aba-triagem" class="conteudo-aba">
+                <h4>📋 Identificação do Veículo e Motorista</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <div>
+                        <label>Placa do Cavalo:</label>
+                        <input type="text" id="port-placa" value="ABC-1234" style="width: 95%; padding: 6px;">
+                    </div>
+                    <div>
+                        <label>Placa da Carreta:</label>
+                        <input type="text" id="port-carreta" value="XYZ-9876" style="width: 95%; padding: 6px;">
+                    </div>
+                    <div>
+                        <label>Nome do Motorista:</label>
+                        <input type="text" id="port-motorista" value="Carlos Eduardo" style="width: 95%; padding: 6px;">
+                    </div>
+                    <div>
+                        <label>CPF / CNH:</label>
+                        <input type="text" id="port-doc-motorista" value="123.456.789-00" style="width: 95%; padding: 6px;">
+                    </div>
+                    <div>
+                        <label>Tipo de Veículo:</label>
+                        <select id="port-tipo-veiculo" style="width: 98%; padding: 6px;">
+                            <option value="Bitrem">Bitrem / Rodotrem</option>
+                            <option value="Carreta 3 Eixos" selected>Carreta 3 Eixos</option>
+                            <option value="Truck">Truck (Toco)</option>
+                            <option value="VUC">VUC / Utilitário</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Transportadora:</label>
+                        <input type="text" id="port-transportadora" value="Logística Brasil Express" style="width: 95%; padding: 6px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMÓDULO 2: BALANÇA RODOVIÁRIA -->
+            <div id="aba-balanca" class="conteudo-aba" style="display: none;">
+                <h4>⚖️ Pesagem na Balança Rodoviária</h4>
+                <div style="background: #0f0f1d; padding: 15px; border-radius: 6px; border: 1px solid #3d3d5c; margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <p style="margin: 0; font-size: 12px; color: #888;">PESO BRUTO ENTRADA (Kg):</p>
+                            <h2 id="display-peso-bruto" style="margin: 5px 0; color: #00ffcc; font-family: monospace;">42.850 Kg</h2>
+                        </div>
+                        <button type="button" class="btn-acao" onclick="capturarPesoEntrada()">📡 Capturar Peso Automatizado</button>
+                    </div>
+                    <hr style="border-color: #2a2a40; margin: 10px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+                        <div>Status do Sensor de Eixos: <strong style="color: #00ff00;">OK (4 Eixos Detectados)</strong></div>
+                        <div>Tolerância de Balança: <strong style="color: #00ff00;">Dentro do Limite (+0.2%)</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMÓDULO 3: INSPEÇÃO & CHECKLIST -->
+            <div id="aba-inspecao" class="conteudo-aba" style="display: none;">
+                <h4>🔍 Checklist de Segurança e Integridade</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                    <label><input type="checkbox" id="chk-lacre" checked> Lacre do baú/tanque íntegro e condizente com a documentação</label>
+                    <label><input type="checkbox" id="chk-bau" checked> Compartimento de carga limpo, seco, sem odores ou vazamentos</label>
+                    <label><input type="checkbox" id="chk-epis" checked> Motorista equipado com EPIs (Calçado de segurança, Colete, Capacete)</label>
+                    <label><input type="checkbox" id="chk-temperatura" checked> Carga com controle térmico dentro do padrão (se aplicável)</label>
+                    <label><input type="checkbox" id="chk-pragas" checked> Ausência de sinais de pragas ou contaminação externa</label>
+                </div>
+            </div>
+
+            <!-- SUBMÓDULO 4: FISCAL & DANFE -->
+            <div id="aba-fiscal" class="conteudo-aba" style="display: none;">
+                <h4>📄 Documentação Fiscal & Manifesto</h4>
+                <div style="margin-top: 10px;">
+                    <label>Chave de Acesso DANFE / CT-e (44 dígitos):</label>
+                    <input type="text" id="port-chave-danfe" value="35260812345678000195550010000885211001234567" style="width: 97%; padding: 8px; margin-top: 4px; font-family: monospace;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <div>
+                        <label>Número do Pedido (PO/Ordem):</label>
+                        <input type="text" id="port-po" value="PO-2026-9941" style="width: 95%; padding: 6px;">
+                    </div>
+                    <div>
+                        <label>Tipo de Operação:</label>
+                        <select id="port-tipo-operacao" style="width: 98%; padding: 6px;">
+                            <option value="Recebimento Materia-Prima">Recebimento (Matéria-Prima / Insumos)</option>
+                            <option value="Transferencia">Transferência Entre Filiais</option>
+                            <option value="Expedicao">Expedição / Produto Acabado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMÓDULO 5: DOCA & PÁTIO -->
+            <div id="aba-doca" class="conteudo-aba" style="display: none;">
+                <h4>🚦 Atribuição de Pátio e Agendamento</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <div>
+                        <label>Doca Destino Preferencial:</label>
+                        <select id="port-doca-destino" style="width: 98%; padding: 6px;">
+                            <option value="DOCA-01">DOCA 01 - Descarga Grãos/A granel</option>
+                            <option value="DOCA-02" selected>DOCA 02 - Paletizados / Carga Geral</option>
+                            <option value="DOCA-03">DOCA 03 - Refrigeração / Climatizado</option>
+                            <option value="PATIO-ESPERA">PÁTIO DE ESPERA (Aguardando vaga)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Código Pager / Chamador do Motorista:</label>
+                        <input type="text" id="port-pager" value="PAGER-12" style="width: 95%; padding: 6px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roda-pé de Ações do Modal -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #3d3d5c; padding-top: 15px;">
+                <span id="status-portaria-msg" style="font-size: 13px; color: #ffea00;">💡 Navegue pelas abas para conferir os dados.</span>
+                <button type="submit" class="btn-acao" style="background: #28a745; color: white;">[ VERIFICAR & LIBERAR ENTRADA ]</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="modal-overlay" id="modal-recebimento">
+    <div class="modal-conteudo">
+        <span class="fechar-btn" onclick="fecharModal('modal-recebimento')">&times;</span>
+        <h2>📦 Doca 02 - Conferência Cega</h2>
+        <p>Insira a quantidade contada fisicamente pelo conferente:</p>
+        <input type="number" id="qtd-contada" value="100" style="padding: 8px; width: 80%;">
+        <br>
+        <button class="btn-acao" onclick="executarAcao('/api/recebimento/conferir', {quantidade: parseInt(document.getElementById('qtd-contada').value)}, 'modal-recebimento')">
+            [ OK ] Finalizar Conferência
+        </button>
+    </div>
+</div>
