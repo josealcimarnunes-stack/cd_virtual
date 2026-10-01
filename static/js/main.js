@@ -183,3 +183,76 @@ function finalizarRecebimentoDoca() {
     })
     .catch(err => console.error("Erro no recebimento:", err));
 }
+// ==========================================
+// ESTADO GLOBAL E MODO DEMO
+// ==========================================
+let modoDemo = false; // Se true, ignora todas as travas para navegação livre
+
+function alternarModoDemo(ativado) {
+    modoDemo = ativado;
+    if (modoDemo) {
+        alert("🔓 MODO DEMO ATIVADO!\n\nTodas as travas de segurança foram temporariamente desativadas para apresentação livre das telas.");
+    } else {
+        alert("🔒 MODO OPERACIONAL ATIVADO!\n\nAs travas sequenciais de segurança estão ativas.");
+    }
+}
+
+// ==========================================
+// ABERTURA DE MODAL COM SUPORTE AO MODO DEMO
+// ==========================================
+function abrirModalSeguro(idModal) {
+    // Se o Modo Demo estiver ligado, libera o acesso direto a qualquer tela
+    if (modoDemo) {
+        document.getElementById(idModal).style.display = 'flex';
+        return;
+    }
+
+    // Validações sequenciais normais quando o Modo Demo está DESLIGADO
+    if (idModal === 'modal-conferencia' && !statusOperacao.portariaConcluida) {
+        alert("⚠️ ACESSO NEGADO!\n\nVocê precisa primeiro realizar a Triagem, Pesagem e Liberação no módulo de PORTARIA.\n\n(Dica: Ative o 'Modo Apresentação' no topo para navegar livremente).");
+        return;
+    }
+
+    if (idModal === 'modal-estoque' && !statusOperacao.recebimentoConcluido) {
+        alert("⚠️ ACESSO NEGADO!\n\nConclua a Conferência e Recebimento na DOCA antes de acessar o WMS/Estoque.");
+        return;
+    }
+
+    document.getElementById(idModal).style.display = 'flex';
+}
+
+// ==========================================
+// VALIDAÇÃO ABA POR ABA DA PORTARIA (COM MODO DEMO)
+// ==========================================
+function mudarAbaPortaria(idAba) {
+    // Se o Modo Demo estiver ligado, permite clicar em qualquer aba sem travas
+    if (!modoDemo) {
+        if (idAba === 'aba-balanca' && !fluxoPortaria.triagemOk) {
+            alert("🛑 BLOQUEIO DE SEGURANÇA:\n\nConclua a TRIAGEM antes de ir para a Balança!");
+            return;
+        }
+        if (idAba === 'aba-inspecao' && !fluxoPortaria.balancaOk) {
+            alert("🛑 BLOQUEIO DE SEGURANÇA:\n\nA pesagem na BALANÇA ainda não foi realizada!");
+            return;
+        }
+        if (idAba === 'aba-fiscal' && !fluxoPortaria.inspecaoOk) {
+            alert("🛑 BLOQUEIO DE SEGURANÇA:\n\nVeículo pendente de APROVAÇÃO NA INSPEÇÃO FÍSICA!");
+            return;
+        }
+        if (idAba === 'aba-pager' && !fluxoPortaria.fiscalOk) {
+            alert("🛑 BLOQUEIO DE SEGURANÇA:\n\nValidação FISCAL/DANFE pendente!");
+            return;
+        }
+    }
+
+    // Troca de aba visual
+    const abas = document.querySelectorAll('#modal-portaria .conteudo-aba');
+    abas.forEach(aba => aba.style.display = 'none');
+
+    const abaSelecionada = document.getElementById(idAba);
+    if (abaSelecionada) abaSelecionada.style.display = 'block';
+
+    const botoes = document.querySelectorAll('#modal-portaria .btn-aba');
+    botoes.forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) event.target.classList.add('active');
+}
