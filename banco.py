@@ -47,8 +47,28 @@ def criar_banco():
         CREATE TABLE IF NOT EXISTS controle_simulacao (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             etapa TEXT UNIQUE NOT NULL,
-            status TEXT NOT NULL, -- 'VERDE', 'AMARELO', 'VERMELHO', 'BLOQUEADO'
+            status TEXT NOT NULL,
             mensagem TEXT
+        )
+    """)
+
+    # Nova Tabela: Cenários de Portaria (Treinamento / Banco de Caminhões Bons e Ruins)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cenarios_portaria (
+            id_cenario INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome_cenario TEXT NOT NULL,
+            placa TEXT NOT NULL,
+            carreta TEXT NOT NULL,
+            motorista TEXT NOT NULL,
+            doc_motorista TEXT NOT NULL,
+            transportadora TEXT NOT NULL,
+            peso_bruto INTEGER NOT NULL,
+            chk_lacre BOOLEAN NOT NULL,
+            chk_bau BOOLEAN NOT NULL,
+            chk_epis BOOLEAN NOT NULL,
+            po TEXT NOT NULL,
+            tipo_falha_esperada TEXT NOT NULL, -- 'ok', 'documento', 'placa', 'inspecao', 'fiscal'
+            descricao_problema TEXT NOT NULL
         )
     """)
 
@@ -66,9 +86,68 @@ def criar_banco():
         etapas_iniciais,
     )
 
+    # Inicializa cenários de teste padrão na tabela de portaria
+    cenarios_iniciais = [
+        (
+            "Caminhão Bom 01 - Tudo Conforme",
+            "ABC-1234",
+            "XYZ-9876",
+            "Carlos Eduardo",
+            "123.456.789-00",
+            "Logística Brasil Express",
+            42850,
+            1,
+            1,
+            1,
+            "PO-2026-9941",
+            "ok",
+            "Nenhum problema encontrado. Carga liberada.",
+        ),
+        (
+            "Caminhão Ruim 01 - Lacre Violado",
+            "ERR-4040",
+            "BAD-1111",
+            "Marcos Pneus",
+            "111.222.333-44",
+            "Veloz Cargas",
+            39000,
+            0,
+            1,
+            1,
+            "PO-2026-9943",
+            "inspecao",
+            "Reprovado no checklist de segurança (Lacre danificado).",
+        ),
+        (
+            "Caminhão Ruim 02 - Documento Faltando",
+            "DEF-5678",
+            "GHI-1234",
+            "Ana sem CNH",
+            "",
+            "Express Falso",
+            31000,
+            1,
+            1,
+            1,
+            "PO-2026-9944",
+            "documento",
+            "CPF/CNH do motorista ausente ou inválido.",
+        ),
+    ]
+    cursor.executemany(
+        """
+        INSERT OR IGNORE INTO cenarios_portaria (nome_cenario, placa, carreta, motorista, doc_motorista, transportadora, peso_bruto, chk_lacre, chk_bau, chk_epis, po, tipo_falha_esperada, descricao_problema)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+        cenarios_iniciais,
+    )
+
     conn.commit()
     conn.close()
-    print("✅ Banco de dados 'cd_virtual.db' criado e inicializado com sucesso!")
+    print(
+        "✅ Banco de dados 'cd_virtual.db' criado e atualizado com cenários de"
+        " portaria!"
+    )
 
 
 if __name__ == "__main__":
