@@ -1,0 +1,106 @@
+================================================================================
+ 📋 FOLHA DE EXERCÍCIOS E SIMULAÇÃO - PORTARIA WMS (TREINAMENTO)
+ Instruções para o Aluno: Utilize os dados abaixo para realizar a triagem
+ de entrada na Guarita. Fique atento às pendências fiscais!
+================================================================================
+
+--- BLOCO 1: CARGAS REGULARES (Devem passar direto) ---
+
+Exercício 01 | Placa: TRK-0001 | Carreta: CRT-0001 | Motorista: Motorista Regular 1 (CPF: 123.456.7801-00)
+          | Pedido (PO): PO-2026-9001 | Chave MDF-e: 35260845678912000195580010000000015544332
+--------------------------------------------------------------------------------
+Exercício 02 | Placa: TRK-0002 | Carreta: CRT-0002 | Motorista: Motorista Regular 2 (CPF: 123.456.7802-00)
+          | Pedido (PO): PO-2026-9002 | Chave MDF-e: 35260845678912000195580010000000025544332
+--------------------------------------------------------------------------------
+Exercício 03 | Placa: TRK-0003 | Carreta: CRT-0003 | Motorista: Motorista Regular 3 (CPF: 123.456.7803-00)
+          | Pedido (PO): PO-2026-9003 | Chave MDF-e: 35260845678912000195580010000000035544332
+--------------------------------------------------------------------------------
+Exercício 04 | Placa: TRK-0004 | Carreta: CRT-0004 | Motorista: Motorista Regular 4 (CPF: 123.456.7804-00)
+          | Pedido (PO): PO-2026-9004 | Chave MDF-e: 35260845678912000195580010000000045544332
+--------------------------------------------------------------------------------
+Exercício 05 | Placa: TRK-0005 | Carreta: CRT-0005 | Motorista: Motorista Regular 5 (CPF: 123.456.7805-00)
+          | Pedido (PO): PO-2026-9005 | Chave MDF-e: 35260845678912000195580010000000055544332
+--------------------------------------------------------------------------------
+Exercício 06 | Placa: TRK-0006 | Carreta: CRT-0006 | Motorista: Motorista Regular 6 (CPF: 123.456.7806-00)
+          | Pedido (PO): PO-2026-9006 | Chave MDF-e: 35260845678912000195580010000000065544332
+--------------------------------------------------------------------------------
+Exercício 07 | Placa: TRK-0007 | Carreta: CRT-0007 | Motorista: Motorista Regular 7 (CPF: 123.456.7807-00)
+          | Pedido (PO): PO-2026-9007 | Chave MDF-e: 35260845678912000195580010000000075544332
+--------------------------------------------------------------------------------
+Exercício 08 | Placa: TRK-0008 | Carreta: CRT-0008 | Motorista: Motorista Regular 8 (CPF: 123.456.7808-00)
+          | Pedido (PO): PO-2026-9008 | Chave MDF-e: 35260845678912000195580010000000085544332
+--------------------------------------------------------------------------------
+Exercício 09 | Placa: TRK-0009 | Carreta: CRT-0009 | Motorista: Motorista Regular 9 (CPF: 123.456.7809-00)
+          | Pedido (PO): PO-2026-9009 | Chave MDF-e: 35260845678912000195580010000000095544332
+--------------------------------------------------------------------------------
+Exercício 10 | Placa: TRK-0010 | Carreta: CRT-0010 | Motorista: Motorista Regular 10 (CPF: 123.456.7810-00)
+          | Pedido (PO): PO-2026-9010 | Chave MDF-e: 35260845678912000195580010000000105544332
+--------------------------------------------------------------------------------
+Exercício 11 | Placa: TRK-0011 | Carreta: CRT-0011 | Motorista: Motorista Regular 11 (CPF: 123.456.7811-00)
+          | Pedido (PO): PO-2026-9011 | Chave MDF-e: 35260845678912000195580010000000115544332
+--------------------------------------------------------------------------------
+Exercício 12 | Placa: TRK-0012 | Carreta: CRT-0012 | Motorista: Motorista Regular 12 (CPF: 123.456.7812-00)
+          | Pedido (PO): PO-2026-9012 | Chave MDF-e: 35260845678912000195580010000000125544332
+--------------------------------------------------------------------------------
+Exercício 13 | Placa: TRK-0013 | Carreta: CRT-0013 | Motorista: Motorista Regular 13 (CPF: 123.456.7813-00)
+          | Pedido (PO): PO-2026-9013 | Chave MDF-e: 35260845678912000195580010000000135544332
+--------------------------------------------------------------------------------
+Exercício 14 | Placa: TRK-0014 | Carreta: CRT-0014 | Motorista: Motorista Regular 14 (CPF: 123.456.7814-00)
+          | Pedido (PO): PO-2026-9014 | Chave MDF-e: 35260845678912000195580010000000145544332
+--------------------------------------------------------------------------------
+Exercício 15 | Placa: TRK-0015 | Carreta: CRT-0015 | Motorista: Motorista Regular 15 (CPF: 123.456.7815-00)
+          | Pedido (PO): PO-2026-9015 | Chave MDF-e: 35260845678912000195580010000000155544332
+--------------------------------------------------------------------------------
+Exercício 16 | Placa: TRK-0016 | Carreta: CRT-0016 | Motorista: Motorista Regular 16 (CPF: 123.456.7816-00)
+          | Pedido (PO): PO-2026-9016 | Chave MDF-e: 35260845678912000195580010000000165544332
+--------------------------------------------------------------------------------
+Exercício 17 | Placa: TRK-0017 | Carreta: CRT-0017 | Motorista: Motorista Regular 17 (CPF: 123.456.7817-00)
+          | Pedido (PO): PO-2026-9017 | Chave MDF-e: 35260845678912000195580010000000175544332
+--------------------------------------------------------------------------------
+Exercício 18 | Placa: TRK-0018 | Carreta: CRT-0018 | Motorista: Motorista Regular 18 (CPF: 123.456.7818-00)
+          | Pedido (PO): PO-2026-9018 | Chave MDF-e: 35260845678912000195580010000000185544332
+--------------------------------------------------------------------------------
+Exercício 19 | Placa: TRK-0019 | Carreta: CRT-0019 | Motorista: Motorista Regular 19 (CPF: 123.456.7819-00)
+          | Pedido (PO): PO-2026-9019 | Chave MDF-e: 35260845678912000195580010000000195544332
+--------------------------------------------------------------------------------
+Exercício 20 | Placa: TRK-0020 | Carreta: CRT-0020 | Motorista: Motorista Regular 20 (CPF: 123.456.7820-00)
+          | Pedido (PO): PO-2026-9020 | Chave MDF-e: 35260845678912000195580010000000205544332
+--------------------------------------------------------------------------------
+Exercício 21 | Placa: TRK-0021 | Carreta: CRT-0021 | Motorista: Motorista Regular 21 (CPF: 123.456.7821-00)
+          | Pedido (PO): PO-2026-9021 | Chave MDF-e: 35260845678912000195580010000000215544332
+--------------------------------------------------------------------------------
+Exercício 22 | Placa: TRK-0022 | Carreta: CRT-0022 | Motorista: Motorista Regular 22 (CPF: 123.456.7822-00)
+          | Pedido (PO): PO-2026-9022 | Chave MDF-e: 35260845678912000195580010000000225544332
+--------------------------------------------------------------------------------
+Exercício 23 | Placa: TRK-0023 | Carreta: CRT-0023 | Motorista: Motorista Regular 23 (CPF: 123.456.7823-00)
+          | Pedido (PO): PO-2026-9023 | Chave MDF-e: 35260845678912000195580010000000235544332
+--------------------------------------------------------------------------------
+Exercício 24 | Placa: TRK-0024 | Carreta: CRT-0024 | Motorista: Motorista Regular 24 (CPF: 123.456.7824-00)
+          | Pedido (PO): PO-2026-9024 | Chave MDF-e: 35260845678912000195580010000000245544332
+--------------------------------------------------------------------------------
+Exercício 25 | Placa: TRK-0025 | Carreta: CRT-0025 | Motorista: Motorista Regular 25 (CPF: 123.456.7825-00)
+          | Pedido (PO): PO-2026-9025 | Chave MDF-e: 35260845678912000195580010000000255544332
+--------------------------------------------------------------------------------
+
+--- BLOCO 2: CARGAS COM PENDÊNCIA (Devem disparar o Quiz Fiscal) ---
+
+ALERTA EXERCÍCIO 26 | Placa: ERR-MDF-01 | Carreta: CRT-ERR-01 | Motorista: Motorista Com Pendencia 1 (CPF: 999.888.7701-99)
+                 | Pedido (PO): PO-2026-8801 | Chave MDF-e: PENDENTE-SEFAZ
+                 -> ATENÇÃO: Esta carga possui pendência fiscal na SEFAZ!
+--------------------------------------------------------------------------------
+ALERTA EXERCÍCIO 27 | Placa: ERR-MDF-02 | Carreta: CRT-ERR-02 | Motorista: Motorista Com Pendencia 2 (CPF: 999.888.7702-99)
+                 | Pedido (PO): PO-2026-8802 | Chave MDF-e: PENDENTE-SEFAZ
+                 -> ATENÇÃO: Esta carga possui pendência fiscal na SEFAZ!
+--------------------------------------------------------------------------------
+ALERTA EXERCÍCIO 28 | Placa: ERR-MDF-03 | Carreta: CRT-ERR-03 | Motorista: Motorista Com Pendencia 3 (CPF: 999.888.7703-99)
+                 | Pedido (PO): PO-2026-8803 | Chave MDF-e: PENDENTE-SEFAZ
+                 -> ATENÇÃO: Esta carga possui pendência fiscal na SEFAZ!
+--------------------------------------------------------------------------------
+ALERTA EXERCÍCIO 29 | Placa: ERR-MDF-04 | Carreta: CRT-ERR-04 | Motorista: Motorista Com Pendencia 4 (CPF: 999.888.7704-99)
+                 | Pedido (PO): PO-2026-8804 | Chave MDF-e: PENDENTE-SEFAZ
+                 -> ATENÇÃO: Esta carga possui pendência fiscal na SEFAZ!
+--------------------------------------------------------------------------------
+ALERTA EXERCÍCIO 30 | Placa: ERR-MDF-05 | Carreta: CRT-ERR-05 | Motorista: Motorista Com Pendencia 5 (CPF: 999.888.7705-99)
+                 | Pedido (PO): PO-2026-8805 | Chave MDF-e: PENDENTE-SEFAZ
+                 -> ATENÇÃO: Esta carga possui pendência fiscal na SEFAZ!
+--------------------------------------------------------------------------------

@@ -1,139 +1,111 @@
 <div class="modal-overlay" id="modal-portaria">
-    <div class="modal-conteudo" style="width: 820px; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-conteudo" style="width: 780px; max-height: 90vh; overflow-y: auto;">
         <span class="fechar-btn" onclick="fecharModal('modal-portaria')">&times;</span>
-        <h2>🚚 Módulo da Portaria & Triagem de Entrada</h2>
-        <p style="color: #aaa; font-size: 13px;">Preencha todos os dados da triagem física e fiscal apresentados pelo motorista</p>
+        <h2>🚚 Módulo de Portaria & Triagem (Guarita)</h2>
+        <p style="color: #aaa; font-size: 13px;">Conferência inicial de documentos, motorista, EPIs e lacre do baú</p>
         <hr style="border-color: #3d3d5c; margin-bottom: 15px;">
-
-        <!-- Navegação por Submódulos -->
-        <div style="display: flex; gap: 5px; margin-bottom: 15px; background: #1a1a2e; padding: 5px; border-radius: 5px;">
-            <button class="btn-aba active" onclick="mudarAbaPortaria('aba-triagem')">1. Triagem Completa</button>
-            <button class="btn-aba" onclick="mudarAbaPortaria('aba-balanca')">2. Balança</button>
-            <button class="btn-aba" onclick="mudarAbaPortaria('aba-inspecao')">3. Inspeção & Lacre</button>
-            <button class="btn-aba" onclick="mudarAbaPortaria('aba-doca')">4. Pátio & Doca</button>
-        </div>
 
         <form id="form-portaria-completo" onsubmit="event.preventDefault(); processarPortariaCompleta();">
             
-            <!-- SUBMÓDULO 1: TRIAGEM COMPLETA (TUDO EM UMA SÓ PÁGINA COM SCROLL) -->
-            <div id="aba-triagem" class="conteudo-aba">
-                
-                <!-- Bloco 1: Veículo -->
-                <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 5px;">1. Identificação do Veículo</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px;">
-                    <div>
-                        <label>Placa do Cavalo:</label>
-                        <input type="text" id="port-placa" placeholder="Ex: ABC-1234" style="width: 95%; padding: 6px;">
-                    </div>
-                    <div>
-                        <label>Placa da Carreta:</label>
-                        <input type="text" id="port-carreta" placeholder="Ex: XYZ-9876" style="width: 95%; padding: 6px;">
-                    </div>
-                    <div>
-                        <label>Tipo de Veículo:</label>
-                        <select id="port-tipo-veiculo" style="width: 98%; padding: 6px;">
-                            <option value="Bitrem">Bitrem / Rodotrem</option>
-                            <option value="Carreta 3 Eixos" selected>Carreta 3 Eixos</option>
-                            <option value="Truck">Truck (Toco)</option>
-                            <option value="VUC">VUC / Utilitário</option>
-                        </select>
-                    </div>
+            <!-- Bloco 1: Veículo -->
+            <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 5px;">1. Identificação do Veículo</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px;">
+                <div>
+                    <label>Placa do Cavalo:</label>
+                    <input type="text" id="port-placa" placeholder="Ex: ABC-1234" style="width: 95%; padding: 6px;">
                 </div>
-
-                <!-- Bloco 2: Motorista e EPIs -->
-                <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">2. Motorista e Verificação de EPIs</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-                    <div>
-                        <label>Nome do Motorista:</label>
-                        <input type="text" id="port-motorista" placeholder="Nome Completo" style="width: 95%; padding: 6px;">
-                    </div>
-                    <div>
-                        <label>CPF / CNH:</label>
-                        <input type="text" id="port-doc-motorista" placeholder="000.000.000-00" style="width: 95%; padding: 6px;">
-                    </div>
+                <div>
+                    <label>Placa da Carreta:</label>
+                    <input type="text" id="port-carreta" placeholder="Ex: XYZ-9876" style="width: 95%; padding: 6px;">
                 </div>
-                <div style="background: #1a1a2e; padding: 10px; border-radius: 5px; margin-top: 8px; border: 1px solid #3d3d5c;">
-                    <label style="font-size: 12px; color: #ffea00; display: block; margin-bottom: 6px;">Checklist de EPIs Obrigatórios do Motorista:</label>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; font-size: 13px;">
-                        <label><input type="checkbox" id="epi-oculos" checked> Óculos</label>
-                        <label><input type="checkbox" id="epi-botina" checked> Botina de Segurança</label>
-                        <label><input type="checkbox" id="epi-capacete" checked> Capacete</label>
-                        <label><input type="checkbox" id="epi-colete" checked> Colete Refletivo</label>
-                    </div>
-                </div>
-<!-- Bloco 3: Dados Fiscais e Comerciais (Cruzamento WMS) -->
-                <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">3. Dados Fiscais e Comerciais (Cruzamento com ERP)</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-                    <div style="grid-column: span 2; background: #151528; padding: 10px; border-radius: 5px; border: 1px dashed #00ffcc;">
-                        <label style="color: #00ffcc; font-weight: bold;">Número do Pedido (PO / Ordem de Compra):</label>
-                        <input type="text" id="port-po" placeholder="Ex: PO-2026-9941" style="width: 98%; padding: 7px; margin-top: 4px;">
-                    </div>
-                    <div>
-                        <label>Chave de Acesso DANFE (Nota Fiscal):</label>
-                        <input type="text" id="port-chave-danfe" value="35260812345678000195550010000885211001234567" style="width: 95%; padding: 6px; font-family: monospace; font-size: 11px;">
-                    </div>
-                    <div>
-                        <label>Chave de Acesso CT-e (Conhecimento):</label>
-                        <input type="text" id="port-chave-cte" value="35260898765432000195570010000123451009876543" style="width: 95%; padding: 6px; font-family: monospace; font-size: 11px;">
-                    </div>
-                    <div style="grid-column: span 2;">
-                        <label>Chave de Acesso MDF-e (Manifesto Eletrônico):</label>
-                        <input type="text" id="port-chave-mdfe" value="35260845678912000195580010000443321005544332" style="width: 97%; padding: 6px; font-family: monospace; font-size: 11px;">
-                    </div>
-                </div>
-
-                <!-- Bloco 4: Controle de Pátio e Carga -->
-                <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">4. Controle Operacional de Pátio & Carga</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px;">
-                    <div>
-                        <label>Transportadora:</label>
-                        <input type="text" id="port-transportadora" placeholder="Nome da Transportadora" style="width: 95%; padding: 6px;">
-                    </div>
-                    <div>
-                        <label>Doca Destino Prevista:</label>
-                        <select id="port-doca-destino" style="width: 98%; padding: 6px;">
-                            <option value="DOCA-02" selected>DOCA 02 - Paletizados</option>
-                            <option value="DOCA-04">DOCA 04 - Fracionados</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Dispositivo Pager:</label>
-                        <input type="text" id="port-pager" value="PAGER-12" style="width: 95%; padding: 6px;">
-                    </div>
-                </div>
-                <div style="margin-top: 10px; background: #1a1a2e; padding: 10px; border-radius: 5px; border: 1px solid #3d3d5c;">
-                    <label><input type="checkbox" id="chk-lacre" checked> Lacre do baú/tanque íntegro e condizente com a documentação</label>
-                </div>
-
-            </div>
-
-            <!-- Outras abas menores para etapas seguintes -->
-            <div id="aba-balanca" class="conteudo-aba" style="display: none;">
-                <h4>⚖ Pesagem na Balança Rodoviária</h4>
-                <div style="background: #0f0f1d; padding: 15px; border-radius: 6px; border: 1px solid #3d3d5c; margin-top: 10px;">
-                    <p style="margin: 0; font-size: 12px; color: #888;">PESO BRUTO ENTRADA (Kg):</p>
-                    <h2 id="display-peso-bruto" style="margin: 5px 0; color: #00ffcc; font-family: monospace;">42850 Kg</h2>
+                <div>
+                    <label>Tipo de Veículo:</label>
+                    <select id="port-tipo-veiculo" style="width: 98%; padding: 6px;">
+                        <option value="Bitrem">Bitrem / Rodotrem</option>
+                        <option value="Carreta 3 Eixos" selected>Carreta 3 Eixos</option>
+                        <option value="Truck">Truck (Toco)</option>
+                        <option value="VUC">VUC / Utilitário</option>
+                    </select>
                 </div>
             </div>
 
-            <div id="aba-inspecao" class="conteudo-aba" style="display: none;">
-                <h4>🔍 Inspeção Visual Adicional do Veículo</h4>
-                <p style="color: #aaa; font-size: 13px;">Verificação física do piso e das condições do compartimento de carga.</p>
+            <!-- Bloco 2: Motorista e EPIs -->
+            <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">2. Motorista e Verificação de EPIs</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+                <div>
+                    <label>Nome do Motorista:</label>
+                    <input type="text" id="port-motorista" placeholder="Nome Completo" style="width: 95%; padding: 6px;">
+                </div>
+                <div>
+                    <label>CPF / CNH:</label>
+                    <input type="text" id="port-doc-motorista" placeholder="000.000.000-00" style="width: 95%; padding: 6px;">
+                </div>
+            </div>
+            <div style="background: #1a1a2e; padding: 10px; border-radius: 5px; margin-top: 8px; border: 1px solid #3d3d5c;">
+                <label style="font-size: 12px; color: #ffea00; display: block; margin-bottom: 6px;">Checklist de EPIs Completos:</label>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; font-size: 13px;">
+                    <label><input type="checkbox" id="epi-oculos" checked> Óculos</label>
+                    <label><input type="checkbox" id="epi-botina" checked> Botina de Segurança</label>
+                    <label><input type="checkbox" id="epi-capacete" checked> Capacete</label>
+                    <label><input type="checkbox" id="epi-colete" checked> Colete Refletivo</label>
+                </div>
+                <div style="margin-top: 8px;">
+                    <label><input type="checkbox" id="chk-bau" checked> Condições do Baú Adequadas</label>
+                </div>
             </div>
 
-            <div id="aba-doca" class="conteudo-aba" style="display: none;">
-                <h4>🚦 Direcionamento Final ao Pátio</h4>
-                <p style="color: #aaa; font-size: 13px;">Confirmação de liberação para encoger na doca.</p>
+            <!-- Bloco 3: Dados Fiscais e Comerciais (Cruzamento WMS) -->
+            <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">3. Dados Fiscais e Comerciais (Cruzamento com ERP)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+                <div style="grid-column: span 2; background: #151528; padding: 10px; border-radius: 5px; border: 1px dashed #00ffcc;">
+                    <label style="color: #00ffcc; font-weight: bold;">Número do Pedido (PO / Ordem de Compra):</label>
+                    <input type="text" id="port-po" placeholder="Ex: PO-2026-9941" style="width: 98%; padding: 7px; margin-top: 4px;">
+                </div>
+                <div>
+                    <label>Chave DANFE (Nota Fiscal):</label>
+                    <input type="text" id="port-chave-danfe" value="35260812345678000195550010000885211001234567" style="width: 95%; padding: 6px; font-family: monospace; font-size: 11px;">
+                </div>
+                <div>
+                    <label>Chave CT-e (Conhecimento):</label>
+                    <input type="text" id="port-chave-cte" value="35260898765432000195570010000123451009876543" style="width: 95%; padding: 6px; font-family: monospace; font-size: 11px;">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label>Chave MDF-e (Manifesto Eletrônico):</label>
+                    <input type="text" id="port-chave-mdfe" value="35260845678912000195580010000443321005544332" style="width: 97%; padding: 6px; font-family: monospace; font-size: 11px;">
+                </div>
+            </div>
+
+            <!-- Bloco 4: Controle Operacional de Pátio & Lacre -->
+            <h4 style="color: #00ffcc; border-bottom: 1px solid #3d3d5c; padding-bottom: 4px; margin-top: 15px;">4. Controle Operacional de Pátio & Lacre</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px;">
+                <div>
+                    <label>Transportadora:</label>
+                    <input type="text" id="port-transportadora" placeholder="Nome da Transportadora" style="width: 95%; padding: 6px;">
+                </div>
+                <div>
+                    <label>Doca Destino Prevista:</label>
+                    <select id="port-doca-destino" style="width: 98%; padding: 6px;">
+                        <option value="DOCA-02" selected>DOCA 02 - Paletizados</option>
+                        <option value="DOCA-04">DOCA 04 - Fracionados</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Dispositivo Pager:</label>
+                    <input type="text" id="port-pager" value="PAGER-12" style="width: 95%; padding: 6px;">
+                </div>
+            </div>
+            <div style="margin-top: 10px; background: #1a1a2e; padding: 10px; border-radius: 5px; border: 1px solid #3d3d5c;">
+                <label><input type="checkbox" id="chk-lacre" checked> Lacre do baú íntegro e condizente com a documentação</label>
             </div>
 
             <!-- Rodapé de Ações -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #3d3d5c; padding-top: 15px;">
-                <span id="status-portaria-msg" style="font-size: 13px; color: #ffea00;">💡 Preencha os dados da triagem e clique em Validar Entrada.</span>
-                <button type="submit" class="btn-acao" style="background: #28a745; color: white; padding: 10px 20px; font-weight: bold;">[ VALIDAR ENTRADA NO ERP ]</button>
+                <span id="status-portaria-msg" style="font-size: 13px; color: #ffea00;">💡 Preencha os dados e valide a triagem da guarita.</span>
+                <button type="submit" class="btn-acao" style="background: #28a745; color: white; padding: 10px 20px; font-weight: bold;">[ VALIDAR E LIBERAR PARA BALANÇA ]</button>
             </div>
         </form>
 
-        <!-- PAINEL DO QUIZ DE DIAGNÓSTICO (Oculto até o WMS bloquear) -->
+        <!-- PAINEL DO QUIZ DE DIAGNÓSTICO -->
         <div id="painel-quiz-diagnostico" style="display: none; background: #2a1a1a; border: 2px solid #ff4444; padding: 15px; border-radius: 6px; margin-top: 15px;">
             <h3 style="color: #ff4444; margin-top: 0;">🔍 Alerta de Divergência do WMS</h3>
             <p id="quiz-mensagem-alerta" style="font-size: 13px; color: #ddd;"></p>
@@ -142,7 +114,7 @@
                 <label><input type="radio" name="diagnostico" value="documento"> A) Documentação ou CPF/CNH do motorista incompleto/inválido.</label>
                 <label><input type="radio" name="diagnostico" value="placa"> B) Placa do cavalo/carreta divergente ou não cadastrada.</label>
                 <label><input type="radio" name="diagnostico" value="inspecao"> C) Reprovado no checklist de segurança (Lacre violado ou baú inadequado).</label>
-                <label><input type="radio" name="diagnostico" value="fiscal"> D) Divergência no Pedido de Compra (PO), Nota Fiscal Falsa ou Chave inválida.</label>
+                <label><input type="radio" name="diagnostico" value="fiscal"> D) Divergência no Pedido de Compra (PO), Nota Fiscal ou Chave inválida.</label>
             </div>
 
             <button type="button" class="btn-acao" style="margin-top: 15px; background: #ffaa00; color: #000;" onclick="enviarDiagnosticoQuiz()">[ ENVIAR AUDITORIA DO DIAGNÓSTICO ]</button>
@@ -150,66 +122,3 @@
 
     </div>
 </div>
-
-<script>
-let falhaAtualGlobal = "";
-
-function processarPortariaCompleta() {
-    const dados = {
-        placa: document.getElementById('port-placa').value,
-        po: document.getElementById('port-po').value
-    };
-
-    fetch('/api/portaria/processar-completo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-    })
-    .then(res => res.json().then(data => ({ status: res.status, body: data })))
-    .then(resultado => {
-        if (resultado.status === 400 && resultado.body.status === "bloqueio_diagnostico") {
-            falhaAtualGlobal = resultado.body.falha_real;
-            document.getElementById("quiz-mensagem-alerta").innerText = resultado.body.mensagem;
-            document.getElementById("painel-quiz-diagnostico").style.display = "block";
-            document.getElementById("status-portaria-msg").innerText = "⚠️ Veículo retido pelo WMS! Resolva o diagnóstico abaixo.";
-        } else {
-            alert(resultado.body.mensagem);
-            if (resultado.body.status === 'sucesso') {
-                statusOperacao.portariaConcluida = true;
-                const luzPortaria = document.getElementById('luz-portaria');
-                if (luzPortaria) luzPortaria.className = 'luz-status status-VERDE';
-                const luzRecebimento = document.getElementById('luz-recebimento');
-                if (luzRecebimento) luzRecebimento.className = 'luz-status status-AMARELO';
-                fecharModal('modal-portaria');
-            }
-        }
-    });
-}
-
-function enviarDiagnosticoQuiz() {
-    let radios = document.getElementsByName("diagnostico");
-    let escolha = "";
-    for (let r of radios) {
-        if (r.checked) escolha = r.value;
-    }
-
-    if (!escolha) {
-        alert("Selecione uma alternativa de diagnóstico!");
-        return;
-    }
-
-    fetch('/api/portaria/validar-diagnostico', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ falha_real: falhaAtualGlobal, resposta_escolhida: escolha })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.mensagem);
-        if (data.acertou) {
-            document.getElementById("painel-quiz-diagnostico").style.display = "none";
-            document.getElementById("status-portaria-msg").innerText = "✅ Auditoria correta! Incidente tratado.";
-        }
-    });
-}
-</script>

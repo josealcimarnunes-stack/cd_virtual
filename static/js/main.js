@@ -196,3 +196,90 @@ function finalizarRecebimentoDoca() {
     })
     .catch(err => console.error("Erro no recebimento:", err));
 }
+// Função chamada ao enviar o formulário da Portaria
+function processarPortariaCompleta() {
+    const dados = {
+        placa: document.getElementById('port-placa').value.trim(),
+        carreta: document.getElementById('port-carreta').value.trim(),
+        motorista: document.getElementById('port-motorista').value.trim(),
+        doc_motorista: document.getElementById('port-doc-motorista').value.trim(),
+        po: document.getElementById('port-po').value.trim(),
+        chk_lacre: document.getElementById('chk-lacre').checked,
+        chk_epis: document.getElementById('epi-oculos').checked && 
+                    document.getElementById('epi-botina').checked && 
+                    document.getElementById('epi-capacete').checked && 
+                    document.getElementById('epi-colete').checked,
+        chk_bau: document.getElementById('chk-bau').checked
+    };
+
+    fetch('/api/portaria/processar-completo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+    })
+    .then(async res => {
+        const resultado = await res.json();
+        if (!res.ok) {
+            // Houve um bloqueio / erro detectado pelo WMS
+            exibirPainelQuiz(resultado.mensagem, resultado.falha_real);
+            return;
+        }
+        
+        // Sucesso absoluto!
+        alert(resultado.mensagem);
+        statusOperacao.portariaConcluida = true;
+        fecharModal('modal-portaria');
+    })
+    .catch(err => console.error("Erro na requisição:", err));
+}
+
+// Exibe o painel de diagnóstico interativo para o aluno treinar
+function exibirPainelQuiz(mensagemErro, falhaReal) {
+    // Esconde a mensagem padrão e mostra o painel de quiz que desenhamos no HTML
+    const painelQuiz = document.getElementById('painel-quiz-diagnostico');
+    const msgAlerta = document.getElementById('quiz-mensagem-alerta');
+    
+    if (painelQuiz && msgAlerta) {
+        msgAlerta.innerText = mensagemErro;
+        painelQuiz.style.display = 'block';
+        // Guarda a falha real no elemento para validar depois
+        painelQuiz.dataset.falhaReal = falhaReal;
+    } else {
+        alert(mensagemErro); // Fallback caso o painel HTML não esteja na tela
+    }
+}
+
+// Envia a resposta do aluno no quiz de auditoria
+function enviarDiagnosticoQuiz() {
+    const painelQuiz = document.getElementById('painel-quiz-diagnostico');
+    const falhaReal = painelQuiz.dataset.falhaReal;
+    
+    // Pega qual rádio o usuário marcou
+    const opcaoSelecionada = document.querySelector('input[name="diagnostico"]:checked');
+    if (!opcaoSelecionada) {
+        alert("⚠️ Selecione uma das alternativas do quiz antes de enviar a auditoria.");
+        return;
+    }
+
+    const respostaEscolhida = opcaoSelecionada.value;
+
+    fetch('/api/portaria/validar-diagnostico', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            falha_real: falhaReal,
+            resposta_escolhida: respostaEscolhida
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.mensagem);
+        if (data.acertou) {
+            // Se acertou, fecha o painel de bloqueio e libera o fluxo
+            painelQuiz.style.display = 'none';
+            statusOperacao.portariaConcluida = true;
+            fecharModal('modal-portaria');
+        }
+    })
+    .catch(err => console.error("Erro ao validar quiz:", err));
+}

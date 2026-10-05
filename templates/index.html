@@ -11,8 +11,10 @@
     <label style="color: #fff; font-weight: bold; font-size: 0.9rem;">🔓 Modo Apresentação (Liberar Geral):</label>
     <input type="checkbox" id="chk-modo-demo" onchange="alternarModoDemo(this.checked)" style="transform: scale(1.3); cursor: pointer;">
 </div>
+
     <h1>🏢 Centro de Distribuição Virtual - Hub de Cargas</h1>
     <p style="text-align:center; color:#aaa;">Clique no setor para abrir a estação de controle e liberar os processos.</p>
+
 <!-- Planta do Galpão com Trava de Segurança -->
     <div class="planta-container">
         <!-- Card 1: Portaria (Sempre liberado para início da simulação) -->
@@ -36,11 +38,39 @@
             <p>Endereçamento, Pulmão e Picking</p>
         </div>
     </div>
+
+    <!-- Bloco Adicionado: Gerador de Exercícios / Prova Prática para Download -->
+    <div style="max-width: 800px; margin: 30px auto; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; text-align: center;">
+        <h4>🎓 Gerador de Prova / Exercícios Práticos (Portaria)</h4>
+        <p style="font-size: 0.9rem; color: #555;">Escolha a quantidade de cargas para simulação. O sistema sorteia e embaralha os dados do banco para download!</p>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 15px;">
+            <label for="qtd-exercicios" style="font-weight: bold;">Quantidade:</label>
+            <select id="qtd-exercicios" class="form-control" style="width: 120px; padding: 5px;">
+                <option value="5">5 Itens</option>
+                <option value="10" selected>10 Itens</option>
+                <option value="15">15 Itens</option>
+                <option value="20">20 Itens</option>
+                <option value="30">Todos (30)</option>
+            </select>
+            
+            <button onclick="baixarExerciciosEmbaralhados()" class="btn btn-primary" style="background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                📥 Baixar Exercícios Embaralhados (TXT)
+            </button>
+        </div>
+    </div>
+
     <!-- Modais Separados dos Setores -->
     {% include 'modais/portaria.html' %}
     {% include 'modais/recebimento.html' %}
     {% include 'modais/estoque.html' %}
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+    function baixarExerciciosEmbaralhados() {
+        let qtd = document.getElementById('qtd-exercicios').value;
+        window.location.href = `/api/portaria/baixar-exercicios-personalizado?qtd=${qtd}`;
+    }
+    </script>
 </body>
 </html>
