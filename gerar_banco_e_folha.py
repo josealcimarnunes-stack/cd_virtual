@@ -1,3 +1,4 @@
+import random
 import sqlite3
 
 
@@ -23,6 +24,43 @@ def gerar_ambiente_treinamento():
         )
     """)
 
+    # Bancos de nomes reais para dar realismo à portaria
+    nomes_regulares = [
+        "Carlos Alberto da Silva",
+        "José Roberto Santos",
+        "Antônio Marcos Oliveira",
+        "Paulo César de Souza",
+        "Francisco das Chagas",
+        "Luiz Fernando Ribeiro",
+        "Marcos Vinícius Mendes",
+        "João Batista Pereira",
+        "Raimundo Nonato Lima",
+        "Sérgio Ricardo Souza",
+        "Edson de Oliveira",
+        "Alexandre Cavalcanti",
+        "Cláudio Diniz Rocha",
+        "Rafael Nogueira Dias",
+        "Marcelo Henrique Alves",
+        "Bruno Eduardo Farias",
+        "Diego Martins Guimarães",
+        "Felipe da Costa Siqueira",
+        "Gabriel Viana Cardoso",
+        "Leandro Mota Silveira",
+        "Rodrigo Antunes Pires",
+        "Thiago Henrique Neves",
+        "Wellington Dias Prado",
+        "Anderson Luis Correia",
+        "Wagner de Souza Lima",
+    ]
+
+    nomes_pendencia = [
+        "Renato Vasconcelos",
+        "Luciano Moreira Bessa",
+        "Fabiano Trindade Luz",
+        "Maurício Sampaio Costa",
+        "Reginaldo Ramos de Sá",
+    ]
+
     cenarios = []
     conteudo_impresso = []
 
@@ -31,10 +69,8 @@ def gerar_ambiente_treinamento():
         " 📋 FOLHA DE EXERCÍCIOS E SIMULAÇÃO - PORTARIA WMS (TREINAMENTO)"
     )
     conteudo_impresso.append(
-        " Instruções para o Aluno: Utilize os dados abaixo para realizar a" " triagem"
-    )
-    conteudo_impresso.append(
-        " de entrada na Guarita. Fique atento às pendências fiscais!"
+        " Instruções para o Aluno: Utilize os dados abaixo para realizar a"
+        " triagem de entrada na Guarita. Fique atento às pendências fiscais!"
     )
     conteudo_impresso.append("=" * 80 + "\n")
 
@@ -42,11 +78,11 @@ def gerar_ambiente_treinamento():
         "--- BLOCO 1: CARGAS REGULARES (Devem passar direto) ---\n"
     )
 
-    # 2. Gerar 25 Cargas Regulares
+    # 2. Gerar 25 Cargas Regulares com nomes reais
     for i in range(1, 26):
         placa = f"TRK-{i:04d}"
         carreta = f"CRT-{i:04d}"
-        motorista = f"Motorista Regular {i}"
+        motorista = nomes_regulares[i - 1]
         doc = f"123.456.78{i:02d}-00"
         po = f"PO-2026-{9000 + i}"
         danfe = f"35260812345678000195550010000{i:05d}1234567"
@@ -79,11 +115,11 @@ def gerar_ambiente_treinamento():
         "\n--- BLOCO 2: CARGAS COM PENDÊNCIA (Devem disparar o Quiz Fiscal) ---\n"
     )
 
-    # 3. Gerar 5 Cargas com Falha Fiscal (MDF-e em aberto)
+    # 3. Gerar 5 Cargas com Falha Fiscal (MDF-e em aberto) com nomes reais
     for j in range(1, 6):
         placa = f"ERR-MDF-{j:02d}"
         carreta = f"CRT-ERR-{j:02d}"
-        motorista = f"Motorista Com Pendencia {j}"
+        motorista = nomes_pendencia[j - 1]
         doc = f"999.888.77{j:02d}-99"
         po = f"PO-2026-88{j:02d}"
         danfe = f"35260899999999000195550010000{j:05d}1111111"
@@ -137,8 +173,8 @@ def gerar_ambiente_treinamento():
         arquivo_txt.write("\n".join(conteudo_impresso))
 
     print(
-        "✅ Sucesso absoluto! Banco populado com 30 cargas e arquivo"
-        " 'folha_exercicios_alunos.txt' gerado para impressão!"
+        "✅ Sucesso absoluto! Banco populado com 30 cargas reais e arquivo"
+        " 'folha_exercicios_alunos.txt' gerado!"
     )
 
 

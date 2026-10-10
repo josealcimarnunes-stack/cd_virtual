@@ -6,9 +6,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<!-- Adicionar dentro da <header> ou barra superior -->
-<div class="controle-demo" style="display: flex; align-items: center; gap: 10px; background: #222; padding: 8px 15px; border-radius: 8px; border: 1px solid #444;">
-    <label style="color: #fff; font-weight: bold; font-size: 0.9rem;">🔓 Modo Apresentação (Liberar Geral):</label>
+   <!-- PAINEL DE KPIS LOGÍSTICOS E GESTÃO EM TEMPO REAL -->
+<div style="max-width: 1000px; margin: 20px auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+    
+    <!-- CARD 1: OTIF (CLICÁVEL) -->
+    <div onclick="abrirModalOTIF()" style="background: #1a1a2e; border: 1px solid #ffaa00; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer;">
+        <h5 style="color: #ffaa00; margin: 0 0 5px 0; font-size: 13px;">🎯 OTIF & Strikes (Ver Fornecedores)</h5>
+        <h2 style="color: #fff; margin: 0; font-size: 22px;">94.2%</h2>
+        <small style="color: #ffea00; font-size: 11px;"><u>Clique para ver Fornecedores / Strikes</u></small>
+    </div>
+
+    <!-- CARD 2: GIRO DE ESTOQUE (CLICÁVEL) -->
+    <div onclick="abrirModalGiroEstoque()" style="background: #1a1a2e; border: 1px solid #00bcd4; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer;">
+        <h5 style="color: #00bcd4; margin: 0 0 5px 0; font-size: 13px;">🔄 Giro de Estoque</h5>
+        <h2 style="color: #fff; margin: 0; font-size: 22px;">18.5 x/ano</h2>
+        <small style="color: #00bcd4; font-size: 11px;"><u>Clique para ver Itens Encalhados</u></small>
+    </div>
+
+    <!-- CARD 3: ACURÁCIA (CLICÁVEL) -->
+    <div onclick="abrirModalAcuracia()" style="background: #1a1a2e; border: 1px solid #28a745; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer;">
+        <h5 style="color: #28a745; margin: 0 0 5px 0; font-size: 13px;">📋 Acurácia de Inventário</h5>
+        <h2 style="color: #fff; margin: 0; font-size: 22px;">99.8%</h2>
+        <small style="color: #28a745; font-size: 11px;"><u>Clique para ver Divergências da Doca</u></small>
+    </div>
+
+    <!-- CARD 4: SUSTENTABILIDADE ESG -->
+    <div style="background: #1a1a2e; border: 1px solid #00ffcc; padding: 12px; border-radius: 8px; text-align: center;">
+        <h5 style="color: #00ffcc; margin: 0 0 5px 0; font-size: 13px;">🌳 Selo ESG (FSC)</h5>
+        <h2 style="color: #fff; margin: 0; font-size: 22px;">100%</h2>
+        <small style="color: #888; font-size: 11px;">Madeira Certificada</small>
+    </div>
+
+</div>
+
+<!-- Barra do Modo Apresentação -->
+<div class="controle-demo" style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #222; padding: 8px 15px; border-radius: 8px; border: 1px solid #444; max-width: 400px; margin: 10px auto;">
+    <label style="color: #fff; font-weight: bold; font-size: 0.9rem;">🔓 Modo Apresentação:</label>
     <input type="checkbox" id="chk-modo-demo" onchange="alternarModoDemo(this.checked)" style="transform: scale(1.3); cursor: pointer;">
 </div>
 
@@ -17,21 +50,24 @@
 
 <!-- Planta do Galpão com Trava de Segurança -->
     <div class="planta-container">
-        <!-- Card 1: Portaria (Sempre liberado para início da simulação) -->
+        <div class="modulo-card" onclick="abrirModal('modal-compras')">
+            <span class="luz-status status-AMARELO" id="luz-compras"></span>
+            <h3>0. Compras & Suprimentos</h3>
+            <p>Cotação de Fornecedores, SLAs e Emissão de PO</p>
+        </div>
+
         <div class="modulo-card" onclick="abrirModal('modal-portaria')">
             <span class="luz-status status-AMARELO" id="luz-portaria"></span>
             <h3>1. Portaria</h3>
             <p>Triagem de Veículos e Validação de DANFE</p>
         </div>
 
-        <!-- Card 2: Doca (Usa abrirModalSeguro para verificar se a Portaria foi concluída) -->
         <div class="modulo-card" onclick="abrirModalSeguro('modal-conferencia')">
             <span class="luz-status status-BLOQUEADO" id="luz-recebimento"></span>
             <h3>2. Doca e Conferência</h3>
             <p>Descarregamento, Contagem e Avarias</p>
         </div>
 
-        <!-- Card 3: Estoque WMS (Usa abrirModalSeguro para verificar se a Doca foi concluída) -->
         <div class="modulo-card" onclick="abrirModalSeguro('modal-estoque')">
             <span class="luz-status status-BLOQUEADO" id="luz-estoque"></span>
             <h3>3. WMS / Armazém</h3>
@@ -39,14 +75,14 @@
         </div>
     </div>
 
-    <!-- Bloco Adicionado: Gerador de Exercícios / Prova Prática para Download -->
-    <div style="max-width: 800px; margin: 30px auto; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; text-align: center;">
-        <h4>🎓 Gerador de Prova / Exercícios Práticos (Portaria)</h4>
-        <p style="font-size: 0.9rem; color: #555;">Escolha a quantidade de cargas para simulação. O sistema sorteia e embaralha os dados do banco para download!</p>
+    <!-- Bloco: Gerador de Exercícios / Prova Prática para Download -->
+    <div style="max-width: 800px; margin: 30px auto; padding: 20px; background: #1a1a2e; border: 1px solid #3d3d5c; border-radius: 8px; text-align: center;">
+        <h4 style="color: #ffea00; margin-top: 0;">🎓 Gerador de Prova / Exercícios Práticos (Portaria)</h4>
+        <p style="font-size: 0.9rem; color: #aaa;">Escolha a quantidade de cargas para simulação. O sistema sorteia e embaralha os dados do banco para download!</p>
         
         <div style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 15px;">
-            <label for="qtd-exercicios" style="font-weight: bold;">Quantidade:</label>
-            <select id="qtd-exercicios" class="form-control" style="width: 120px; padding: 5px;">
+            <label for="qtd-exercicios" style="color: #fff; font-weight: bold;">Quantidade:</label>
+            <select id="qtd-exercicios" class="form-control" style="width: 120px; padding: 5px; background: #222; color: #fff; border: 1px solid #444;">
                 <option value="5">5 Itens</option>
                 <option value="10" selected>10 Itens</option>
                 <option value="15">15 Itens</option>
@@ -54,16 +90,109 @@
                 <option value="30">Todos (30)</option>
             </select>
             
-            <button onclick="baixarExerciciosEmbaralhados()" class="btn btn-primary" style="background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+            <button onclick="baixarExerciciosEmbaralhados()" class="btn btn-primary" style="background: #ffea00; color: #000; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">
                 📥 Baixar Exercícios Embaralhados (TXT)
             </button>
         </div>
     </div>
 
     <!-- Modais Separados dos Setores -->
+    {% include 'modais/compras.html' %}
     {% include 'modais/portaria.html' %}
     {% include 'modais/recebimento.html' %}
     {% include 'modais/estoque.html' %}
+
+    <!-- ============================================================ -->
+    <!-- MODAL 1: OTIF E STRIKES DE FORNECEDORES                      -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="modal-kpi-otif" style="display:none;">
+      <div class="modal-conteudo" style="width: 850px; max-height: 85vh; overflow-y: auto;">
+        <span class="fechar-btn" onclick="fecharModal('modal-kpi-otif')">&times;</span>
+        <h3 style="color:#ffaa00; margin-top:0;">🎯 Gestão de OTIF, SLAs e Penalidades (Strikes)</h3>
+        <p style="color:#aaa; font-size:13px;">Clique no nome do fornecedor para abrir a ficha de auditoria e baixar o relatório individual.</p>
+        <hr style="border-color:#3d3d5c;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="color:#aaa; border-bottom:2px solid #ffaa00;">
+              <th style="text-align:left; padding:8px;">Fornecedor</th>
+              <th style="text-align:left; padding:8px;">Categoria</th>
+              <th style="text-align:center; padding:8px;">Score OTIF</th>
+              <th style="text-align:center; padding:8px;">Nível de Strike</th>
+              <th style="text-align:center; padding:8px;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-kpi-otif-corpo"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 2: GIRO DE ESTOQUE (COM FILTROS E RELATÓRIO)           -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="modal-kpi-giro" style="display:none;">
+      <div class="modal-conteudo" style="width: 850px; max-height: 85vh; overflow-y: auto;">
+        <span class="fechar-btn" onclick="fecharModal('modal-kpi-giro')">&times;</span>
+        <h3 style="color:#00bcd4; margin-top:0;">🔄 Giro de Estoque e Rotatividade de Insumos</h3>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; background:#151528; padding:10px; border-radius:6px;">
+          <div style="display:flex; gap:8px;">
+            <button onclick="carregarGiroEstoque('diario')" data-periodo="diario" class="btn-filtro-giro" style="padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:12px;">📅 Diário</button>
+            <button onclick="carregarGiroEstoque('semanal')" data-periodo="semanal" class="btn-filtro-giro" style="padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:12px;">📆 Semanal</button>
+            <button onclick="carregarGiroEstoque('trimestral')" data-periodo="trimestral" class="btn-filtro-giro" style="padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:12px;">📊 Trimestral</button>
+            <button onclick="carregarGiroEstoque('anual')" data-periodo="anual" class="btn-filtro-giro" style="padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:12px;">📈 Anual</button>
+          </div>
+          <a id="btn-download-giro" href="/api/kpi/exportar-giro-csv/semanal" style="background:#00bcd4; color:#000; padding:6px 12px; border-radius:4px; text-decoration:none; font-weight:bold; font-size:12px;">
+            📥 Baixar Relatório (CSV)
+          </a>
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <span id="badge-periodo-atual" style="background:#3d3d5c; color:#00ffcc; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">Filtro Ativo: PERÍODO SEMANAL</span>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="color:#aaa; border-bottom:2px solid #00bcd4;">
+              <th style="text-align:left; padding:8px;">Insumo / Material</th>
+              <th style="text-align:center; padding:8px;">Posição WMS</th>
+              <th style="text-align:center; padding:8px;">Dias Imobilizado</th>
+              <th style="text-align:center; padding:8px;">Qtd Parada</th>
+              <th style="text-align:center; padding:8px;">Status Giro</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-kpi-giro-corpo"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 3: ACURÁCIA DE INVENTÁRIO                              -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="modal-kpi-acuracia" style="display:none;">
+      <div class="modal-conteudo" style="width: 850px; max-height: 85vh; overflow-y: auto;">
+        <span class="fechar-btn" onclick="fecharModal('modal-kpi-acuracia')">&times;</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="color:#28a745; margin:0;">📋 Auditoria de Acurácia de Inventário</h3>
+          <a href="/api/kpi/exportar-acuracia-csv" style="background:#28a745; color:#fff; padding:6px 12px; border-radius:4px; text-decoration:none; font-weight:bold; font-size:12px;">
+            📥 Baixar Relatório (CSV)
+          </a>
+        </div>
+        <p style="color:#aaa; font-size:13px;">Registro automatizado de divergências detectadas no cruzamento entre a conferência cega e as POs.</p>
+        <hr style="border-color:#3d3d5c;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="color:#aaa; border-bottom:2px solid #28a745;">
+              <th style="text-align:left; padding:8px;">Data / Hora</th>
+              <th style="text-align:left; padding:8px;">Código PO</th>
+              <th style="text-align:left; padding:8px;">Insumo / Item</th>
+              <th style="text-align:center; padding:8px;">Esperado vs Contado</th>
+              <th style="text-align:left; padding:8px;">Ocorrência / Motivo</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-kpi-acuracia-corpo"></tbody>
+        </table>
+      </div>
+    </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>

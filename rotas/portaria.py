@@ -282,8 +282,7 @@ def baixar_exercicios_personalizado():
 
     if not registros:
         return Response(
-            "Nenhum cenário cadastrado no banco.",
-            mimetype="text/plain; charset=utf-8",
+            "Nenhum cenário cadastrado no banco.", mimetype="text/plain; charset=utf-8"
         )
 
     lista_registros = [dict(reg) for reg in registros]
@@ -292,31 +291,27 @@ def baixar_exercicios_personalizado():
 
     linhas = []
     linhas.append("=" * 80)
-    linhas.append(" 📋 FOLHA DE EXERCÍCIOS PERSONALIZADA - PORTARIA WMS (TREINAMENTO)")
+    linhas.append(" 📋 FOLHA DE EXERCÍCIOS / PROVA PRÁTICA - PORTARIA WMS")
     linhas.append(
-        f" Total de Exercícios Gerados: {len(lista_selecionada)} (Embaralhados)"
+        f" Total de Cargas para Auditoria: {len(lista_selecionada)} (Embaralhadas)"
     )
     linhas.append(
-        " Instruções: Utilize os dados abaixo para simular as entradas na" " guarita."
+        " Instruções: Insira os dados abaixo no sistema WMS para validar a entrada."
     )
     linhas.append("=" * 80 + "\n")
 
     for idx, reg in enumerate(lista_selecionada, start=1):
-        tipo = reg["tipo_falha_esperada"].upper()
-        status_txt = (
-            "REGULAR (Deve passar direto)"
-            if tipo == "OK"
-            else f"PENDÊNCIA / FALHA FISCAL ({tipo})"
-        )
-
-        linhas.append(f"EXERCÍCIO {idx:02d} [{status_txt}]")
+        # REMOVIDO O GABARITO EXPLÍCITO DO TÍTULO! Agora o aluno descobre testando no sistema.
+        linhas.append(f"EXERCÍCIO {idx:02d}")
         linhas.append(f"  • Placa (Cavalo): {reg['placa']} | Carreta: {reg['carreta']}")
         linhas.append(
-            f"  • Motorista: {reg['motorista']} (CPF: {reg['doc_motorista']})"
+            f"  • Motorista: {reg['motorista']} (CPF/Doc: {reg['doc_motorista']})"
         )
         linhas.append(f"  • Pedido (PO): {reg['po']}")
         linhas.append(f"  • Chave MDF-e: {reg['chave_mdfe']}")
-        linhas.append(f"  • Observação: {reg['descricao_problema']}")
+        linhas.append(
+            f"  • Observação do Porteiro / Guarita: {reg['descricao_problema']}"
+        )
         linhas.append("-" * 80)
 
     conteudo = "\n".join(linhas)
@@ -325,8 +320,6 @@ def baixar_exercicios_personalizado():
         conteudo,
         mimetype="text/plain; charset=utf-8",
         headers={
-            "Content-Disposition": (
-                f"attachment; filename=exercicios_portaria_{quantidade}_itens.txt"
-            )
+            "Content-Disposition": f"attachment; filename=prova_pratica_portaria_{quantidade}_itens.txt"
         },
     )

@@ -1,0 +1,142 @@
+<div class="modal-overlay" id="modal-compras">
+  <div class="modal-conteudo" style="width: 1000px; max-height: 90vh; overflow-y: auto;">
+    <span class="fechar-btn" onclick="fecharModal('modal-compras')">&times;</span>
+
+    <h2>🛒 Módulo 0 — Compras & Suprimentos (Hub 3PL)</h2>
+    <p style="color:#aaa; font-size:13px;">
+      Selecione a categoria de demanda para verificar insumos e emitir Ordens de Compra (POs).
+    </p>
+    <hr style="border-color:#3d3d5c;">
+
+    <!-- 4 CARDS DE CATEGORIA -->
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:15px;">
+      <div class="modulo-card" onclick="carregarInsumosCategoria('carga_seca')">
+        <h4>📦 1. Carga Seca</h4>
+        <p style="font-size:11px;">Paletes PBR, Filme Stretch, Fitas</p>
+        <span class="badge" style="background:#00bcd4; color:#000;">FIFO / PEPS</span>
+      </div>
+
+      <div class="modulo-card" onclick="carregarInsumosCategoria('molhados_quimicos')">
+        <h4>🧪 2. Molhados & Químicos</h4>
+        <p style="font-size:11px;">Kits FISPQ, Cantoneiras, IBCs</p>
+        <span class="badge" style="background:#ffc107; color:#000;">FISPQ</span>
+      </div>
+
+      <div class="modulo-card" onclick="carregarInsumosCategoria('pereciveis')">
+        <h4>❄️ 3. Perecíveis</h4>
+        <p style="font-size:11px;">Stretch Térmico, Palete Plástico</p>
+        <span class="badge" style="background:#2196f3; color:#fff;">FEFO / PVPS</span>
+      </div>
+
+      <div class="modulo-card" onclick="carregarInsumosCategoria('apoio_infra')">
+        <h4>🏢 4. Apoio & Infra</h4>
+        <p style="font-size:11px;">Etiquetas, Ribbons, Papel A4</p>
+        <span class="badge" style="background:#4caf50; color:#fff;">TI / Escritório</span>
+      </div>
+    </div>
+
+    <!-- PAINEL DINÂMICO DE INSUMOS -->
+    <div id="painelInsumosDetalhados" style="display:none; background:#151528; padding:15px; border-radius:6px; border:1px solid #3d3d5c;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h4 id="tituloCategoriaSelecionada" style="color:#ffea00; margin:0;">Insumos Mapeados</h4>
+        <span id="badgeTotalItens" style="background:#3d3d5c; padding:3px 10px; border-radius:12px; font-size:12px;">0 Insumos</span>
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; font-size:13px;">
+        <thead>
+          <tr style="color:#aaa; border-bottom:1px solid #3d3d5c;">
+            <th style="text-align:left; padding:6px;">Insumo</th>
+            <th style="text-align:left; padding:6px;">Fornecedor</th>
+            <th style="text-align:center; padding:6px;">Estoque</th>
+            <th style="text-align:center; padding:6px;">Demanda</th>
+            <th style="text-align:center; padding:6px;">Status</th>
+            <th style="text-align:center; padding:6px;">Ação</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabelaInsumos"></tbody>
+      </table>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- BOTÃO: VER TODOS OS PEDIDOS FEITOS             -->
+    <!-- ============================================== -->
+    <div style="margin-top:20px; text-align:center;">
+      <button onclick="abrirPainelPedidos()"
+        style="background:#00ffcc; color:#000; border:none; padding:12px 25px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:14px;">
+        📋 Ver Todos os Pedidos Feitos ({carregarTotalPOs()} POs)
+      </button>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PAINEL DE PEDIDOS (escondido por padrão)       -->
+    <!-- ============================================== -->
+    <div id="painelPedidosFeitos" style="display:none; margin-top:20px; background:#0d0d1a; padding:15px; border-radius:6px; border:2px solid #00ffcc;">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h4 style="color:#00ffcc; margin:0;">📋 Painel de Pedidos — Histórico Completo</h4>
+        <button onclick="fecharPainelPedidos()"
+          style="background:#3d3d5c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:12px;">
+          ✖ Fechar Painel
+        </button>
+      </div>
+
+      <!-- FILTROS -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr 2fr; gap:10px; margin-bottom:12px;">
+        <div>
+          <label style="color:#aaa; font-size:11px;">Filtrar por Categoria:</label>
+          <select id="filtro-categoria" onchange="carregarHistoricoPOs()"
+            style="width:100%; padding:6px; background:#151528; color:#fff; border:1px solid #3d3d5c; border-radius:4px;">
+            <option value="todas">Todas as Categorias</option>
+            <option value="carga_seca">📦 Carga Seca</option>
+            <option value="molhados_quimicos">🧪 Molhados & Químicos</option>
+            <option value="pereciveis">❄️ Perecíveis</option>
+            <option value="apoio_infra">🏢 Apoio & Infra</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="color:#aaa; font-size:11px;">Filtrar por Status:</label>
+          <select id="filtro-status" onchange="carregarHistoricoPOs()"
+            style="width:100%; padding:6px; background:#151528; color:#fff; border:1px solid #3d3d5c; border-radius:4px;">
+            <option value="todos">Todos os Status</option>
+            <option value="PO_EMITIDA_AGUARDANDO_RECEBIMENTO">Aguardando Recebimento</option>
+            <option value="RECEBIDA">Recebida</option>
+          </select>
+        </div>
+
+        <div style="display:flex; align-items:flex-end; gap:5px;">
+          <button onclick="carregarHistoricoPOs()"
+            style="background:#3d3d5c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:12px;">
+            🔄 Atualizar
+          </button>
+          <a href="/api/compras/download-historico"
+            style="background:#00bcd4; color:#000; padding:6px 12px; border-radius:4px; text-decoration:none; font-weight:bold; font-size:12px;">
+            📥 Baixar Todos (CSV)
+          </a>
+        </div>
+      </div>
+
+      <!-- TABELA DE PEDIDOS -->
+      <table style="width:100%; border-collapse:collapse; font-size:13px;">
+        <thead>
+          <tr style="color:#aaa; border-bottom:2px solid #00ffcc;">
+            <th style="text-align:left; padding:6px;">Código PO</th>
+            <th style="text-align:left; padding:6px;">Data</th>
+            <th style="text-align:left; padding:6px;">Categoria</th>
+            <th style="text-align:left; padding:6px;">Insumo</th>
+            <th style="text-align:left; padding:6px;">Fornecedor</th>
+            <th style="text-align:center; padding:6px;">Qtd</th>
+            <th style="text-align:center; padding:6px;">Status</th>
+            <th style="text-align:center; padding:6px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoPainelPedidos">
+          <tr><td colspan="8" style="text-align:center; color:#666; padding:15px;">
+            Carregando pedidos...
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
