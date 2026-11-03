@@ -1,13 +1,50 @@
+from datetime import timedelta
 import os
 import sqlite3
-from flask import Flask, jsonify, render_template, request
+from flask import (
+    Flask,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 
 # Importação dos Blueprints modulares
-from rotas.compras import compras_bp  # <- Módulo de Compras & Suprimentos
+from rotas.arquivo import arquivo_bp
+from rotas.compras import compras_bp
 from rotas.conferencia import conferencia_bp
 from rotas.portaria import portaria_bp
 
 app = Flask(__name__)
+
+app.secret_key = "logisuprimentos_secret_key_2026"
+
+
+# ============================================================
+# TRAVA DE SEGURANÇA GLOBAL REFORÇADA
+# ============================================================
+@app.before_request
+def verificar_autenticacao():
+    rotas_livres = ["login", "static"]
+
+    if request.endpoint and request.endpoint not in rotas_livres:
+        # Verifica se a chave de acesso única da aba existe
+        if not session.get("token_sessao_ativa"):
+            return redirect(url_for("login"))
+
+
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = (
+        "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0"
+    )
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "-1"
+    return response
+
 
 # ============================================================
 # Inicialização e Configuração do Banco de Dados SQLite (Spare Parts)
@@ -30,74 +67,50 @@ def init_spare_parts_db():
             criticidade TEXT NOT NULL
         )
     """)
-
-    # Insere dados padrão de peças críticas se a tabela estiver vazia
-    cursor.execute("SELECT COUNT(*) FROM pecas_criticas")
-    if cursor.fetchone()[0] == 0:
-        pecas_iniciais = [
-            (
-                "Robô Paletizador (Placa CPU/Sensor)",
-                "Automação / Robótica",
-                "Fanuc Automation Brasil",
-                "(11) 3000-4455",
-                19500.00,
-                24,
-                "Crítico",
-            ),
-            (
-                "Motor Trifásico Principal (Esteira Doca)",
-                "Eletromecânica",
-                "WEG Indústrias S.A.",
-                "(47) 3276-4000",
-                12800.00,
-                24,
-                "Crítico",
-            ),
-            (
-                "Redutor Planetário de Alta Carga",
-                "Transmissão / Esteiras",
-                "SEW-Eurodrive Brasil",
-                "(19) 3835-8000",
-                28500.00,
-                48,
-                "Crítico",
-            ),
-            (
-                "Compressor de Parafuso (Ar Comprimido)",
-                "Pneumática",
-                "Schulz Compressores",
-                "(47) 3451-6000",
-                35000.00,
-                12,
-                "Crítico",
-            ),
-        ]
-        cursor.executemany(
-            """
-            INSERT INTO pecas_criticas (nome_peca, categoria_equipamento, fornecedor, contato_suporte, preco_estimado, lead_time_horas, criticidade)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-            pecas_iniciais,
-        )
-        conn.commit()
+    conn.commit()
     conn.close()
 
 
-# Executa a criação da tabela ao iniciar o app
 init_spare_parts_db()
 
-
-# ============================================================
-# Registro dos Blueprints (rotas modulares do CD Virtual)
-# ============================================================
-app.register_blueprint(portaria_bp)  # Portaria / Guarita
-app.register_blueprint(conferencia_bp)  # Doca / Conferência Cega
-app.register_blueprint(compras_bp)  # Compras & Suprimentos (Hub 3PL)
+# Registro dos Blueprints
+app.register_blueprint(portaria_bp)
+app.register_blueprint(conferencia_bp)
+app.register_blueprint(compras_bp)
+app.register_blueprint(arquivo_bp)
 
 
 # ============================================================
-# Rota para API de Peças Críticas (Manutenção / Spare Parts)
+# Sistema de Autenticação Estrito
 # ============================================================
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    # Sempre que entra na tela de login, limpa qualquer vestígio anterior
+    session.clear()
+
+    if request.method == "POST":
+        senha_digitada = request.form.get("senha")
+        if senha_digitada == "1234":
+            # Cria um identificador único de sessão para esta aba/instância
+            import uuid
+
+            session["token_sessao_ativa"] = str(uuid.uuid4())
+            return redirect(url_for("index"))
+        else:
+            flash(
+                "Senha incorreta! Para este protótipo, utilize a senha: 1234",
+                "danger",
+            )
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
 @app.route("/api/pecas-criticas", methods=["GET"])
 def listar_pecas_criticas():
     conn = sqlite3.connect(DB_PATH)
@@ -106,22 +119,14 @@ def listar_pecas_criticas():
     cursor.execute("SELECT * FROM pecas_criticas")
     rows = cursor.fetchall()
     conn.close()
-
-    pecas = [dict(row) for row in rows]
-    return jsonify(pecas)
+    return jsonify([dict(row) for row in rows])
 
 
-# ============================================================
-# Rota Principal - Planta Baixa do CD Virtual
-# ============================================================
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-# ============================================================
-# Execução
-# ============================================================
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)

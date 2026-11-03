@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CD Virtual | LogiSuprimentos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-card {
+            max-width: 420px;
+            width: 100%;
+            padding: 35px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-warning mb-1">LogiSuprimentos</h3>
+            <p class="text-muted small">Centro de Distribuição Virtual (CD Virtual)</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show small" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Formulário que intercepta o login via JS para isolar a aba -->
+        <form id="loginForm" method="POST" autocomplete="off">
+            <div class="mb-3">
+                <label for="senha" class="form-label fw-semibold text-light">Senha de Acesso:</label>
+                <input type="password" 
+                       class="form-control bg-dark text-light border-secondary" 
+                       id="senha" 
+                       name="senha" 
+                       placeholder="Digite a senha..." 
+                       autocomplete="new-password"
+                       readonly
+                       onfocus="this.removeAttribute('readonly');"
+                       required 
+                       autofocus>
+            </div>
+            
+            <div class="alert alert-info small py-2 bg-dark text-info border-info">
+                <strong>Segurança CD Virtual:</strong> Acesso restrito e isolado por aba. Senha: <code>1234</code>
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-dark mt-2">
+                Entrar no CD Virtual
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Quando o formulário for enviado com sucesso, marca esta aba como autenticada no sessionStorage
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const senha = document.getElementById('senha').value;
+            if (senha === '1234') {
+                sessionStorage.setItem('cd_virtual_autenticado', 'true');
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

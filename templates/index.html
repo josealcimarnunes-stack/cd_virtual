@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Se o selo de autenticação desta aba não existir, redireciona imediatamente para o login
+    if (sessionStorage.getItem('cd_virtual_autenticado') !== 'true') {
+        window.location.href = '/login';
+    }
+  </script>
     <meta charset="UTF-8">
     <title>Simulador CD Virtual - Planta Baixa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -48,7 +54,7 @@
     <h1>🏢 Centro de Distribuição Virtual - Hub de Cargas</h1>
     <p style="text-align:center; color:#aaa;">Clique no setor para abrir a estação de controle e liberar os processos.</p>
 
-<!-- Planta do Galpão com Trava de Segurança -->
+<!-- Planta do Galpão com Trava de Segurança e os 5 Módulos Alinhados -->
     <div class="planta-container">
         <div class="modulo-card" onclick="abrirModal('modal-compras')">
             <span class="luz-status status-AMARELO" id="luz-compras"></span>
@@ -72,6 +78,13 @@
             <span class="luz-status status-BLOQUEADO" id="luz-estoque"></span>
             <h3>3. WMS / Armazém</h3>
             <p>Endereçamento, Pulmão e Picking</p>
+        </div>
+
+        <!-- Módulo 4: Arquivo & Documentação (POP) integrado no padrão visual do card -->
+        <div class="modulo-card" onclick="window.location.href='/arquivo'" style="cursor: pointer;">
+            <span class="luz-status status-VERDE" id="luz-arquivo"></span>
+            <h3>4. Arquivo & Documentação</h3>
+            <p>Controle Híbrido, Cautela de Documentos e POPs</p>
         </div>
     </div>
 
